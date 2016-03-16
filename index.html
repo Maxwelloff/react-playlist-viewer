@@ -3,9 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello React!</title>
+    <link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <style>
+
+        h1{
+            text-align: center;
+            font-family: 'Lobster';
+        }
+        h3{
+            font-family: 'Lobster';
+            margin-left: 1em;
+        }
+
+        .lightgreen{
+            background:#8bc34a;
+        }
+
+        input{
+            display: block;
+            width: 90%;
+            margin: 1% 5%;
+        }
+
+        label{
+            margin-left: 5%;
+            font-family: 'Abel';
+        }
+
+        .wrapper {
+        	display: block;
+          width:99.6%;
+          margin:0.2%;
+        }
+
+        .wrapper:after {
+        	content:"";
+        	display:table;
+        	clear:both;
+        }
+
+        .ripplelink{
+          display:block;
+          float:left;
+          width:49.6%;
+          margin:0.2%;
+          height:10em;
+          line-height:10em;
+          text-align:center;
+          color:#FFF;
+          font-family: 'Abel';
+          font-size: 20px;
+          text-decoration:none;
+          position:relative;
+          overflow:hidden;
+          -webkit-transition: all 0.2s ease;
+          -moz-transition: all 0.2s ease;
+          -o-transition: all 0.2s ease;
+          transition: all 0.2s ease;
+          z-index:0;
+        }
+
+        .ripplelink:hover{
+        	z-index:1000;
+          box-shadow:rgba(0, 0, 0, 0.3) 0 8px 8px 0;
+          -webkit-box-shadow:rgba(0, 0, 0, 0.3) 0 8px 8px 0;
+          -moz-box-shadow:rgba(0, 0, 0, 0.3) 0 8px 8px 0;
+          cursor: pointer;
+        }
+
+        .ink {
+          display: block;
+          position: absolute;
+          background:rgba(255, 255, 255, 0.3);
+          border-radius: 100%;
+          -webkit-transform:scale(0);
+             -moz-transform:scale(0);
+               -o-transform:scale(0);
+                  transform:scale(0);
+        }
+
+        .animate {
+        	-webkit-animation:ripple 0.65s linear;
+           -moz-animation:ripple 0.65s linear;
+            -ms-animation:ripple 0.65s linear;
+             -o-animation:ripple 0.65s linear;
+                animation:ripple 0.65s linear;
+        }
+
+        @-webkit-keyframes ripple {
+            100% {opacity: 0; -webkit-transform: scale(2.5);}
+        }
+        @-moz-keyframes ripple {
+            100% {opacity: 0; -moz-transform: scale(2.5);}
+        }
+        @-o-keyframes ripple {
+            100% {opacity: 0; -o-transform: scale(2.5);}
+        }
+        @keyframes ripple {
+            100% {opacity: 0; transform: scale(2.5);}
+        }
+
+    </style>
 </head>
 <body>
       <div id="app"></div>
       <script src="/static/bundle.js"></script>
+      <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+      <script type="text/javascript">
+      /*jQuery*/
+      $("body").bind("DOMSubtreeModified", function() {
+        $(function(){
+        	var ink, d, x, y;
+        	$(".ripplelink").click(function(e){
+                if($(this).find(".ink").length === 0){
+                    $(this).prepend("<span class='ink'></span>");
+                }
+
+                ink = $(this).find(".ink");
+                ink.removeClass("animate");
+
+                if(!ink.height() && !ink.width()){
+                    d = Math.max($(this).outerWidth(), $(this).outerHeight());
+                    ink.css({height: d, width: d});
+                }
+
+                x = e.pageX - $(this).offset().left - ink.width()/2;
+                y = e.pageY - $(this).offset().top - ink.height()/2;
+
+                ink.css({top: y+'px', left: x+'px'}).addClass("animate");
+            });
+        });
+    });
+</script>
 </body>
 </html>
